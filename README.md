@@ -6,3 +6,6 @@
 4.	Todos os saques devem ser armazenados em uma variável e exibidos na operação de extrato;
 5.	A operação de extrato deve exibir todos os depósitos e saques realizados na conta e, no fim da listagem, deve mostrar o saldo atual da conta. Caso o extrato esteja em branco, deve aparecer a mensagem “não foram realizadas movimentações;
 6.	Os valores devem ser exibidos utilizando o formato de moeda com duas casas decimais.
+
+### Desafio - Sistema Bancário 2.0 (Parte 01)
+1. Aplicar os conceitos de funções para as operações de saque, depósito e extrato do sistema bancário criado.
