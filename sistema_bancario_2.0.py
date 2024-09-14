@@ -1,5 +1,17 @@
 from datetime import date, time, datetime
 
+# FUNÇÃO CRIAR USUÁRIO
+def criar_usuario(usuarios):
+    cpf = (input("Digite o CPF (somente números): "))
+    filtro = [usuario for usuario in usuarios if usuario['cpf']==cpf]
+    if filtro:
+        print("CPF já cadastrado!")
+    else:
+        nome = input("Digite o nome completo: ")
+        data_nascimento = input("Digite a data de nascimento (dd/mm/aaaa): ")
+        endereco = input("Informe o endereço (Rua, nº, bairro, cidade/UF): ")
+        usuarios.append({"cpf": cpf, "nome": nome, "data_nasc": data_nascimento, "Endereco": endereco})
+    return usuarios
 # FUNÇÃO SAQUE
 def saque(*, valor_saque, saldo_conta, saques_realizados, data_hora_saques, LIMITE_SAQUE, LIMITE_SAQUE_DIARIO, saque_diario, transacoes):
     saque_excedido = valor_saque > saldo_conta
@@ -69,7 +81,7 @@ def extrato(saldo_conta, depositos, data_hora_depositos, saques_realizados, data
     print(f"Transações Realizadas: {transacoes}")
 # FUNÇÃO PRINCIPAL DO SISTEMA
 def run():
-    opcoes = [0,1,2,3]
+    usuarios = []
     depositos = []
     data_hora_depositos = []
     saques_realizados = []
@@ -81,21 +93,25 @@ def run():
     transacoes = 0
 
     menu = '''
-        [0] - Saque
-        [1] - Depósito
-        [2] - Extrato
-        [3] - Sair do sistema'''
-    
-    opcoes = [0,1,2,3]
+        [0] - Criar usuário
+        [1] - Criar conta
+        [2] - Saque
+        [3] - Depósito
+        [4] - Extrato
+        [5] - Sair do sistema'''
 
     while True:
         escolha = int(input(f"Bem-vindo ao Banco V1. Por favor digite uma opção válida: \n{menu}\n"))
-        if escolha not in opcoes:
+        if escolha < 0 or escolha > 5:
             print(f"Opção inválida!")
             if escolha == 3:
                 print("Obrigado por utilizar o Banco V1! Volte Sempre!")
                 break
+        # CRIAR USUÁRIO
         elif escolha == 0:
+            usuarios = criar_usuario(usuarios)
+        # SAQUE
+        elif escolha == 2:
             valor_saque = float(input("Digite o valor para saque: "))   
             saldo_conta, saques_realizados, data_hora_saques, saque_diario, transacoes= saque(
                 valor_saque=valor_saque,
@@ -107,7 +123,7 @@ def run():
                 saque_diario=saque_diario,
                 transacoes=transacoes)
         #DEPÓSITOS
-        elif escolha == 1:
+        elif escolha == 3:
             valor_deposito = float(input("Digite o valor para depósito: "))
             saldo_conta, depositos, data_hora_depositos, transacoes = deposito(
                 valor_deposito=valor_deposito,
@@ -116,10 +132,10 @@ def run():
                 saldo_conta=saldo_conta,
                 transacoes=transacoes)
         #EXTRATOS
-        elif escolha == 2:
+        elif escolha == 4:
             extrato(saldo_conta, depositos, data_hora_depositos, saques_realizados, data_hora_saques, saque_diario, LIMITE_SAQUE_DIARIO, transacoes)
-        #Saída do sistema
-        elif escolha == 3:
+        #SAÍDA DO SISTEMA
+        elif escolha == 5:
             print("Obrigado por utilizar o Banco V1! Volte Sempre!")
             break
 
