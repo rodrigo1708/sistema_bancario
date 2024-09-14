@@ -1,9 +1,9 @@
 from datetime import date, time, datetime
 
-# FUNÇÃO CRIAR USUÁRIO
+#FUNÇÃO PARA CRIAR USUÁROP
 def criar_usuario(usuarios):
     cpf = (input("Digite o CPF (somente números): "))
-    filtro = [usuario for usuario in usuarios if usuario['cpf']==cpf]
+    filtro = filtro_usuarios(cpf, usuarios)
     if filtro:
         print("CPF já cadastrado!")
     else:
@@ -11,13 +11,35 @@ def criar_usuario(usuarios):
         data_nascimento = input("Digite a data de nascimento (dd/mm/aaaa): ")
         endereco = input("Informe o endereço (Rua, nº, bairro, cidade/UF): ")
         usuarios.append({"cpf": cpf, "nome": nome, "data_nasc": data_nascimento, "Endereco": endereco})
-    return usuarios
-# FUNÇÃO SAQUE
+        print("Usuário cadastrado com sucesso!")
+    return cpf, usuarios
+
+#FUNÇÃO PARA FILTRAR USUÁRIOS JÁ CADASTRADOS NO SISTEMA
+def filtro_usuarios(cpf, usuarios):
+    filtro = [usuario for usuario in usuarios if usuario['cpf']==cpf]
+    return filtro[0] if filtro else None
+
+#FUNÇÃO PARA CRIAR CONTA
+def criar_conta(agencia, numero_conta, usuarios, contas):
+    cpf = (input("Digite o CPF (somente números): "))
+    filtro = filtro_usuarios(cpf, usuarios)
+    if filtro:
+        print("Conta Criada com sucesso!")
+        contas.append({"agencia":agencia, "numero_conta": numero_conta, "usuario": filtro})
+        return contas
+    else:
+        print("Usuário não cadastro, não é possível criar a conta!")
+
+#FUNÇÃO PARA LISTAR CONTAS CADASTRADAS
+def listar_contas(contas):
+    for conta in contas:
+        print(f'Titular: {conta["usuario"]["nome"]}\nAgência: {conta["agencia"]}. Conta: {conta["numero_conta"]}')
+
+#FUNÇÃO PARA SAQUE
 def saque(*, valor_saque, saldo_conta, saques_realizados, data_hora_saques, LIMITE_SAQUE, LIMITE_SAQUE_DIARIO, saque_diario, transacoes):
     saque_excedido = valor_saque > saldo_conta
     valor_saque_excedido = valor_saque > LIMITE_SAQUE
     limite_saques_excedidos = saque_diario >= LIMITE_SAQUE_DIARIO
-    # VALIDAÇÕES PARA SAQUE
     if transacoes >= 10:
         print("Limite de transações diárias excedido!")
     elif saque_excedido:
@@ -28,7 +50,6 @@ def saque(*, valor_saque, saldo_conta, saques_realizados, data_hora_saques, LIMI
         print("Limite de saques diários já foi atingido!")
     elif valor_saque < 0:
         print("Valor solicitado inválido!")
-    # REALIZAÇÃO DO PROCEDIMENTO DE SAQUE
     else:
         saldo_conta -= valor_saque
         saques_realizados.append(valor_saque)
@@ -36,25 +57,23 @@ def saque(*, valor_saque, saldo_conta, saques_realizados, data_hora_saques, LIMI
         saque_diario += 1
         transacoes += 1
         print(f"Valor de R$ {valor_saque:.2f} autorizado para saque, retire seu dinheiro!")
-    # RETORNO DAS VARIÁVEIS PARA FUNÇÃO PRINCIPAL
     return saldo_conta, saques_realizados, data_hora_saques, saque_diario, transacoes
-# FUNÇÃO DEPÓSITO
+
+#FUNÇÃO PARA DEPÓSITO
 def deposito(*, valor_deposito, depositos, data_hora_depositos, saldo_conta, transacoes):
-    # VALIDAÇÕES PARA A FUNÇÃO DE DEPÓSITO
     while valor_deposito <= 0:
         valor_deposito = float(input("Valor inválido. Digite um valor válido para depósito: "))
     if transacoes >= 10:
         print("Limite de transações diárias excedido!")
-    # REALIZAÇÃO DA OPERAÇÃO DE DEPÓSITO
     else:
         depositos.append(valor_deposito)
         data_hora_depositos.append(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         saldo_conta += valor_deposito
         transacoes += 1
         print(f"Valor de R$ {valor_deposito:.2f} depositado com sucesso!!")
-    # RETORNO DAS VARIÁVEIS PARA A FUNÇÃO PRINCIPAL DO SISTEMA
     return saldo_conta, depositos, data_hora_depositos, transacoes
-# FUNÇÃO EXTRATO
+
+#FUNÇÃO PARA VISUALIZAR O EXTRATO
 def extrato(saldo_conta, depositos, data_hora_depositos, saques_realizados, data_hora_saques, saque_diario, LIMITE_SAQUE_DIARIO, transacoes):
     mensagem = "Aqui está o seu extrato bancário"
     print(mensagem.upper().center(len(mensagem) + 8, "-"))
@@ -78,15 +97,19 @@ def extrato(saldo_conta, depositos, data_hora_depositos, saques_realizados, data
     print(f"Limite de Saques diário: {LIMITE_SAQUE_DIARIO}")
     print(f"Saques realizados: {saque_diario}")
     print(f"Saldo em conta: R$ {saldo_conta:.2f}")
-    print(f"Transações Realizadas: {transacoes}")
-# FUNÇÃO PRINCIPAL DO SISTEMA
+    print(transacoes)
+
+#FUNÇÃO PRINCIPAL DO SISTEMA
 def run():
     usuarios = []
+    contas = []
+    numero_conta = 0
     depositos = []
     data_hora_depositos = []
     saques_realizados = []
     data_hora_saques = []
     saque_diario = 0
+    AGENCIA = "0001"
     LIMITE_SAQUE = 500
     LIMITE_SAQUE_DIARIO = 3
     saldo_conta = 0
@@ -98,19 +121,24 @@ def run():
         [2] - Saque
         [3] - Depósito
         [4] - Extrato
-        [5] - Sair do sistema'''
+        [5] - Listar contas
+        [6] - Sair do sistema'''
 
     while True:
         escolha = int(input(f"Bem-vindo ao Banco V1. Por favor digite uma opção válida: \n{menu}\n"))
-        if escolha < 0 or escolha > 5:
+        if escolha < 0 or escolha > 6 :
             print(f"Opção inválida!")
             if escolha == 3:
                 print("Obrigado por utilizar o Banco V1! Volte Sempre!")
                 break
-        # CRIAR USUÁRIO
+        #CRIAR USUÁRIO
         elif escolha == 0:
-            usuarios = criar_usuario(usuarios)
-        # SAQUE
+            uusarios = criar_usuario(usuarios)
+        #CRIAR CONTA
+        elif escolha == 1:
+            numero_conta += 1
+            contas = criar_conta(AGENCIA, numero_conta, usuarios, contas)
+        #SAQUE
         elif escolha == 2:
             valor_saque = float(input("Digite o valor para saque: "))   
             saldo_conta, saques_realizados, data_hora_saques, saque_diario, transacoes= saque(
@@ -134,8 +162,11 @@ def run():
         #EXTRATOS
         elif escolha == 4:
             extrato(saldo_conta, depositos, data_hora_depositos, saques_realizados, data_hora_saques, saque_diario, LIMITE_SAQUE_DIARIO, transacoes)
-        #SAÍDA DO SISTEMA
+        #LISTAR CONTAS
         elif escolha == 5:
+            listar_contas(contas)
+        #SAÍDA DO SISTEMA
+        elif escolha == 6:
             print("Obrigado por utilizar o Banco V1! Volte Sempre!")
             break
 
