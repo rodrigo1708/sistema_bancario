@@ -1,9 +1,11 @@
 from datetime import date, time, datetime
 
+# FUNÇÃO SAQUE
 def saque(*, valor_saque, saldo_conta, saques_realizados, data_hora_saques, LIMITE_SAQUE, LIMITE_SAQUE_DIARIO, saque_diario, transacoes):
     saque_excedido = valor_saque > saldo_conta
     valor_saque_excedido = valor_saque > LIMITE_SAQUE
     limite_saques_excedidos = saque_diario >= LIMITE_SAQUE_DIARIO
+    # VALIDAÇÕES PARA SAQUE
     if transacoes >= 10:
         print("Limite de transações diárias excedido!")
     elif saque_excedido:
@@ -14,6 +16,7 @@ def saque(*, valor_saque, saldo_conta, saques_realizados, data_hora_saques, LIMI
         print("Limite de saques diários já foi atingido!")
     elif valor_saque < 0:
         print("Valor solicitado inválido!")
+    # REALIZAÇÃO DO PROCEDIMENTO DE SAQUE
     else:
         saldo_conta -= valor_saque
         saques_realizados.append(valor_saque)
@@ -21,22 +24,25 @@ def saque(*, valor_saque, saldo_conta, saques_realizados, data_hora_saques, LIMI
         saque_diario += 1
         transacoes += 1
         print(f"Valor de R$ {valor_saque:.2f} autorizado para saque, retire seu dinheiro!")
+    # RETORNO DAS VARIÁVEIS PARA FUNÇÃO PRINCIPAL
     return saldo_conta, saques_realizados, data_hora_saques, saque_diario, transacoes
-
-
+# FUNÇÃO DEPÓSITO
 def deposito(*, valor_deposito, depositos, data_hora_depositos, saldo_conta, transacoes):
+    # VALIDAÇÕES PARA A FUNÇÃO DE DEPÓSITO
     while valor_deposito <= 0:
         valor_deposito = float(input("Valor inválido. Digite um valor válido para depósito: "))
     if transacoes >= 10:
         print("Limite de transações diárias excedido!")
+    # REALIZAÇÃO DA OPERAÇÃO DE DEPÓSITO
     else:
         depositos.append(valor_deposito)
         data_hora_depositos.append(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         saldo_conta += valor_deposito
         transacoes += 1
         print(f"Valor de R$ {valor_deposito:.2f} depositado com sucesso!!")
+    # RETORNO DAS VARIÁVEIS PARA A FUNÇÃO PRINCIPAL DO SISTEMA
     return saldo_conta, depositos, data_hora_depositos, transacoes
-
+# FUNÇÃO EXTRATO
 def extrato(saldo_conta, depositos, data_hora_depositos, saques_realizados, data_hora_saques, saque_diario, LIMITE_SAQUE_DIARIO, transacoes):
     mensagem = "Aqui está o seu extrato bancário"
     print(mensagem.upper().center(len(mensagem) + 8, "-"))
@@ -60,8 +66,8 @@ def extrato(saldo_conta, depositos, data_hora_depositos, saques_realizados, data
     print(f"Limite de Saques diário: {LIMITE_SAQUE_DIARIO}")
     print(f"Saques realizados: {saque_diario}")
     print(f"Saldo em conta: R$ {saldo_conta:.2f}")
-    print(transacoes)
-
+    print(f"Transações Realizadas: {transacoes}")
+# FUNÇÃO PRINCIPAL DO SISTEMA
 def run():
     opcoes = [0,1,2,3]
     depositos = []
