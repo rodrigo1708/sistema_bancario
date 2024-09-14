@@ -11,5 +11,7 @@
 1. Aplicar os conceitos de funções para as operações de saque, depósito e extrato do sistema bancário criado.
 
 ### Desafio - Sistema Bancário 2.0 (Parte 02)
-1. Criar novas operações para o sistema bancário (criar usuário e criar conta)
-2. Criar as funções para criação de usuário e criação de conta.
+1. Criar novas operações para o sistema bancário (criar usuário, criar conta e listar contas cadastradas)
+2. Criar as funções para criação de usuário e criação de conta;
+4. Criar a função para listar as contas cadastradas no sistema;
+3. Atualizar Menu de acordo com operações criadas.
