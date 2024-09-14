@@ -9,3 +9,7 @@
 
 ### Desafio - Sistema Bancário 2.0 (Parte 01)
 1. Aplicar os conceitos de funções para as operações de saque, depósito e extrato do sistema bancário criado.
+
+### Desafio - Sistema Bancário 2.0 (Parte 02)
+1. Criar novas operações para o sistema bancário (criar usuário e criar conta)
+2. Criar as funções para criação de usuário e criação de conta.
