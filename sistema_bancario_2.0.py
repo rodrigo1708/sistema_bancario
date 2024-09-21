@@ -1,6 +1,6 @@
 from datetime import date, time, datetime
 
-#FUNÇÃO PARA CRIAR USUÁROP
+#FUNÇÃO PARA CRIAR USUÁRO
 def criar_usuario(usuarios):
     cpf = (input("Digite o CPF (somente números): "))
     filtro = filtro_usuarios(cpf, usuarios)
