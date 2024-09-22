@@ -15,3 +15,13 @@
 2. Criar as funções para criação de usuário e criação de conta;
 4. Criar a função para listar as contas cadastradas no sistema;
 3. Atualizar Menu de acordo com operações criadas.
+
+### Desafio - Sistema Bancário 3.0
+1.	Adicionar as classes:
+    1.1.	Cliente;
+    1.2.	Pessoa Física (estende de Cliente);
+    1.3.	Conta;
+    1.4.	Conta Corrente (estende de Conta);
+    1.5.	Depósito;
+    1.6.	Saque.
+2. Ajustar o código para implementar as operações e armazenamento dos dados de conta e de clientes em objetos.
